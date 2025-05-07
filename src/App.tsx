@@ -145,7 +145,7 @@ function App() {
   return (
     <div className="mx-auto px-4 py-8 max-w-xl">
       <img className="w-24 mx-auto" src={pinnie} alt="Pinnie" />
-      <h1 className="sm:text-5xl text-4x font-[900] mb-6 text-center">Pinnie's Guestbook</h1>
+      <h1 className="sm:text-5xl text-4xl font-[900] mb-6 text-center">Pinnie's Guestbook</h1>
 
       {connectors.length > 0 ? (
         <>
