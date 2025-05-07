@@ -52,7 +52,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://guestbook-indexer-production.up.railway.app/entries');
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/entries`);
       const data = await response.json();
       setEntries(data);
     } catch (error) {
@@ -61,9 +61,8 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  }, []);  // Empty dependency array since it doesn't use any reactive values
+  }, []);
 
-  // Transaction status toasts
   useEffect(() => {
     if (hash && isConfirming) {
       toast.loading("Waiting for transaction confirmation...", {
@@ -92,7 +91,6 @@ function App() {
   }, [isPending]);
 
 
-  // Error toast
   useEffect(() => {
     if (error) {
       toast.error("Transaction Error", {
@@ -112,12 +110,9 @@ function App() {
     if (!message || !isConnected) return;
 
     try {
-
-      // Clear form fields immediately
       const submittedMessage = message;
       const submittedImageUrl = imageUrl;
 
-      // Submit transaction
       writeContract({
         address: CONTRACT_ADDRESS,
         abi: abi,
