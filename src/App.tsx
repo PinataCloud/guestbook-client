@@ -5,12 +5,11 @@ import { Button } from "./components/ui/button";
 import { NotebookPenIcon } from "lucide-react";
 import { BaseError, useAccount, useConnect, useDisconnect, useWaitForTransactionReceipt, useWriteContract} from 'wagmi';
 import { abi, CONTRACT_ADDRESS } from './lib/contract';
-
-
 import { arbitrum } from "viem/chains";
 import { Avatar, AvatarFallback, AvatarImage } from "./components/ui/avatar";
 import { GifSearch } from "./components/GifSearch";
 import { toast } from "sonner"
+import pinnie from "./assets/pinnie.svg"
 
 
 interface GuestbookEntry {
@@ -144,8 +143,9 @@ function App() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-xl">
-      <h1 className="text-3xl font-bold mb-6 text-center">Pinnie's Guestbook</h1>
+    <div className="mx-auto px-4 py-8 max-w-xl">
+      <img className="w-24 mx-auto" src={pinnie} alt="Pinnie" />
+      <h1 className="sm:text-5xl text-4x font-[900] mb-6 text-center">Pinnie's Guestbook</h1>
 
       {connectors.length > 0 ? (
         <>

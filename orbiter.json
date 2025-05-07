@@ -1,0 +1,6 @@
+{
+  "siteId": "e62ed818-7ce5-4beb-a375-f12501c807eb",
+  "domain": "pinnie-guestbook",
+  "buildCommand": "bun run build",
+  "buildDir": "dist"
+}

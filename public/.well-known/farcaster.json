@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjYwMjMsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg0NTYxMzExNjFmODNDN0Q3ZkRBMTViMzJhNWY3QzIxRkQ0RTI3RTk2In0",
+    "payload": "eyJkb21haW4iOiJndWVzdGJvb2sucGlubmllLmZ1biJ9",
+    "signature": "MHhhNGJlYTBhNWRlZjI2YjcxMGQ3ZDgxYTg3MzE3ZGEyNDk5NzJhNDQ4NmIwOGM2M2NjOWVkYzQ1ZTFlY2FiYmZmMTY2NTM2ZTk5YmY5MTNjOGY5ZGYxZjljMzAwM2YzZDhjZmFmNTNkZTM4Mjg1YmM2ODQ4OGY3MGVkZGRlNGQzMDFi"
+  },
+  "frame": {
+    "version": "1",
+    "name": "Pinnies Guestbook",
+    "iconUrl": "https://guestbook.pinnie.fun/icon.png",
+    "homeUrl": "https://guestbook.pinnie.fun",
+    "imageUrl": "https://guestbook.pinnie.fun/image.png",
+    "buttonTitle": "Leave a Message",
+    "splashImageUrl": "https://guestbook.pinnie.fun/splash.png",
+    "splashBackgroundColor": "#0E0E18"
+  }
+}
