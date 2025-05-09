@@ -55,7 +55,7 @@ function App() {
 	// Wallet connection states
 	const { address, isConnected, chain } = useAccount();
 	const { connect, connectors } = useConnect();
-	const { switchChain } = useSwitchChain();
+	const { switchChain, switchChainAsync } = useSwitchChain();
 
 	// Contract interaction states
 	const { data: hash, error, isPending, writeContract } = useWriteContract();
@@ -66,7 +66,9 @@ function App() {
 
 	async function connectWallet() {
 		connect({ connector: connectors[0], chainId: arbitrum.id });
-		switchChain({ chainId: arbitrum.id });
+		if (chain?.id !== arbitrum.id) {
+			await switchChainAsync({ chainId: arbitrum.id });
+		}
 	}
 
 	const fetchEntries = useCallback(async () => {
@@ -85,6 +87,19 @@ function App() {
 			setIsLoading(false);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (isConnected && chain?.id !== arbitrum.id) {
+			toast.warning("Wrong network detected", {
+				description:
+					"Please switch to Arbitrum for this application to work properly",
+				action: {
+					label: "Switch",
+					onClick: () => switchChain({ chainId: arbitrum.id }),
+				},
+			});
+		}
+	}, [chain, isConnected, switchChain]);
 
 	useEffect(() => {
 		if (hash && isConfirming) {
@@ -130,10 +145,20 @@ function App() {
 		if (!message || !isConnected) return;
 
 		try {
-			if (chain !== arbitrum) {
-				switchChain({ chainId: arbitrum.id });
+			if (chain?.id !== arbitrum.id) {
+				toast.loading("Switching to Arbitrum network...", {
+					id: "chain-switch",
+				});
+				try {
+					await switchChainAsync({ chainId: arbitrum.id });
+					toast.dismiss("chain-switch");
+				} catch (error) {
+					console.log(error);
+					toast.dismiss("chain-switch");
+					toast.error("Failed to switch to Arbitrum network");
+					return; // Exit early if chain switch fails
+				}
 			}
-
 			const submittedMessage = message;
 			const submittedImageUrl = imageUrl;
 
@@ -245,7 +270,7 @@ function App() {
 									) : (
 										<>
 											<SignatureIcon />
-											Sign
+											Write
 										</>
 									)}
 								</Button>
@@ -305,7 +330,7 @@ function App() {
 									<div className="mt-4">
 										<img
 											src={entry.imageUrl}
-											alt="Entry image"
+											alt="Entrygif"
 											className="max-h-64 rounded-md mx-auto"
 											onError={(e) => (e.currentTarget.style.display = "none")}
 										/>
