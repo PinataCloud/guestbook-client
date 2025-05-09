@@ -9,12 +9,16 @@ import {
 } from "./components/ui/card";
 import { Input } from "./components/ui/input";
 import { Button } from "./components/ui/button";
-import { NotebookPenIcon } from "lucide-react";
+import {
+	Loader2Icon,
+	NotebookPenIcon,
+	ShareIcon,
+	SignatureIcon,
+} from "lucide-react";
 import {
 	type BaseError,
 	useAccount,
 	useConnect,
-	useDisconnect,
 	useWaitForTransactionReceipt,
 	useWriteContract,
 	useSwitchChain,
@@ -23,7 +27,9 @@ import { abi, CONTRACT_ADDRESS } from "./lib/contract";
 import { arbitrum } from "viem/chains";
 import { Avatar, AvatarFallback, AvatarImage } from "./components/ui/avatar";
 import { GifSearch } from "./components/GifSearch";
+import { LearnMore } from "./components/LearnMore";
 import { toast } from "sonner";
+import { sdk } from "@farcaster/frame-sdk";
 import pinnie from "./assets/pinnie.svg";
 
 interface GuestbookEntry {
@@ -50,7 +56,6 @@ function App() {
 	const { address, isConnected, chain } = useAccount();
 	const { connect, connectors } = useConnect();
 	const { switchChain } = useSwitchChain();
-	const { disconnect } = useDisconnect();
 
 	// Contract interaction states
 	const { data: hash, error, isPending, writeContract } = useWriteContract();
@@ -162,6 +167,10 @@ function App() {
 				Pinnie's Guestbook
 			</h1>
 
+			<div className="w-full flex items-center justify-center my-6">
+				<LearnMore />
+			</div>
+
 			{connectors.length > 0 ? (
 				<>
 					<div className="mb-4 text-center">
@@ -171,13 +180,6 @@ function App() {
 									{address?.substring(0, 6)}...
 									{address?.substring(address.length - 4)}
 								</p>
-								<Button
-									variant="outline"
-									size="sm"
-									onClick={() => disconnect()}
-								>
-									Disconnect
-								</Button>
 							</div>
 						) : (
 							<Button onClick={connectWallet}>Connect Wallet</Button>
@@ -210,9 +212,23 @@ function App() {
 									/>
 								</div>
 							</CardContent>
-							<CardFooter className="flex justify-end my-4">
+							<CardFooter className="flex w-full gap-2 items-center my-4">
+								<Button
+									onClick={() =>
+										sdk.actions.composeCast({
+											text: "I just signed Pinnie's Guestbook!",
+											embeds: ["https://guestbook.pinnie.fun"],
+										})
+									}
+									variant="secondary"
+									className="flex-1"
+								>
+									<ShareIcon />
+									Share
+								</Button>
 								<Button
 									type="submit"
+									className="flex-1"
 									disabled={
 										!message ||
 										!isConnected ||
@@ -221,9 +237,17 @@ function App() {
 										isSubmitting
 									}
 								>
-									{isPending || isConfirming
-										? "Processing..."
-										: "Sign Guestbook"}
+									{isPending || isConfirming ? (
+										<>
+											<Loader2Icon className="animate-spin" />
+											Processing...
+										</>
+									) : (
+										<>
+											<SignatureIcon />
+											Sign
+										</>
+									)}
 								</Button>
 							</CardFooter>
 						</form>
